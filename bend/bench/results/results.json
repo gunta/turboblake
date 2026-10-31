@@ -499,6 +499,24 @@
         "Python, 1 GiB with a key: 33 ms, beside the official package\u2019s 30 on every core",
         "Still proven equal to BLAKE3's keyed tree, for every input"
       ]
+    },
+    {
+      "adr": "0022",
+      "title": "Hashing directories (--recursive)",
+      "summary": "--recursive hashes the regular files under each directory given, as find DIR -type f lists them: depth first, each directory's entries in name order, links inside not followed, fifos and devices skipped. One b3sum line per file, so the output is a --check checkfile. A thread walks the tree up to two batches ahead of the engine. Against find | xargs -0 b3sum on the M5 Pro, files cached: 65,365 Rust sources 3087 -> 810 ms (3.8x), 2,000 x 64 KiB 10.1x, 100,000 files of 0-2 KiB 1.8x, a one-file directory 1.5x, two big files a tie. No single digest for a tree: that needs a format.",
+      "date": "2026-10-31T23:20:00+09:00",
+      "tag": "Speed",
+      "headline": "Hash a whole folder with one command",
+      "dek": "turboblake --recursive hashes every file in a folder and in the folders below it, one line each, in the same order every time. The list is a checksum file that turboblake --check verifies later. On 65,000 Rust source files it finishes 3.8\u00d7 sooner than find piped into b3sum.",
+      "stat": {
+        "value": "3.8\u00d7",
+        "label": "65,365 Rust source files, against find | xargs b3sum"
+      },
+      "points": [
+        "Up to 10\u00d7 on folders of many files, and never slower: two big files are a tie",
+        "Regular files only, as find -type f lists them; links inside are not followed",
+        "The same order on every run, so hashing the list gives one digest for the folder"
+      ]
     }
   ],
   "models": {

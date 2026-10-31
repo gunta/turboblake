@@ -55,8 +55,15 @@ archive is on the [releases page](https://github.com/gunta/turboblake/releases).
 ```bash
 turboblake FILE...           # one "<hash>  <name>" line per file, as b3sum prints
 turboblake FILE... > B3SUMS  # write checksums
+turboblake --recursive DIR   # every file under DIR, one line each
 turboblake --check B3SUMS    # verify them, like sha256sum -c
 ```
+
+`--recursive` (new in 1.8.9; b3sum has no such flag) lists the regular files under each
+directory, as `find DIR -type f` does, in name order and without following
+links; its output is a checkfile for `--check`. On 65k Rust sources it is 3.8x
+faster than `find DIR -type f -print0 | xargs -0 b3sum`
+([ADR 0022](adr/0022-hashing-directories.md)).
 
 `cargo install turboblake --features replace` also installs it as `b3sum`.
 

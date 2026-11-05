@@ -55,8 +55,14 @@ docker run --rm -v "$PWD:/w" -w /w quay.io/pypa/manylinux_2_28_aarch64 \
 - **PyPI**: a pending trusted publisher for the project `turboblake`, with
   the same repository, workflow and environment.
 - **npm**: the package `turboblake`, Settings, Trusted Publisher: GitHub
-  Actions, the same repository, workflow and environment. (npm only offers
-  that for a package that exists: a brand-new package's first version is
+  Actions, the same repository, workflow and environment, with **Direct npm
+  publish** ticked. Publishers made since 2026-09 allow only `npm stage
+  publish` by default, and the release's plain `npm publish` then fails with
+  403 "OIDC permission denied for this action", after a good signature. A
+  publisher can't be edited: delete it and make a new one. npm drops one that
+  hasn't completed a publish within about two days, so a new one may be gone
+  by the next release: `npm trust list turboblake` shows it. (npm only offers
+  all this for a package that exists: a brand-new package's first version is
   published by hand, as 1.8.8 was.)
 - **Homebrew**: a fine-grained token with Contents: read and write on
   `gunta/homebrew-tap` only, as the `HOMEBREW_TAP_TOKEN` secret of the

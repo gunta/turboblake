@@ -27,6 +27,7 @@ on:
       - "scripts/release/**"
       - ".github/workflows/turboblake-build.yml"
       - "!bend/**/*.md"
+      - "!scripts/release/*.md"
       - "!bend/bench/**"
   push:
     branches: [master]
